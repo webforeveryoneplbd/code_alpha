@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Age Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="index.css">
+
+</head>
+<body>
+	<form id="age-calculator">
+		<label for="dob-day">Date of Birth (Day):</label>
+		<input type="number" id="dob-day" name="dob-day" min="1" max="31" required>
+		<br>
+		<label for="dob-month">Date of Birth (Month):</label>
+		<input type="number" id="dob-month" name="dob-month" min="1" max="12" required>
+		<br>
+		<label for="dob-year">Date of Birth (Year):</label>
+		<input type="number" id="dob-year" name="dob-year" min="1" required>
+		<br>
+		<button type="submit">Calculate Age</button>
+	</form>
+	<p id="age"></p>
+
+	<script>
+		// Select the form and age paragraph elements
+		const form = document.getElementById('age-calculator');
+		const ageParagraph = document.getElementById('age');
+
+		// Define a function to calculate the user's age
+		function calculateAge(day, month, year) {
+			const currentDate = new Date();
+			const dob = new Date(year, month - 1, day); // subtract 1 from month because JavaScript months are 0-based
+
+			let age = currentDate.getFullYear() - dob.getFullYear();
+			let m = currentDate.getMonth() - dob.getMonth();
+			if (m < 0 || (m === 0 && currentDate.getDate() < dob.getDate())) {
+				age--;
+			}
+
+			return age;
+		}
+
+		// Add an event listener to the form to calculate the user's age when the form is submitted
+		form.addEventListener('submit', function(event) {
+			// Prevent the form from being submitted normally
+			event.preventDefault();
+
+			// Get the user's date of birth from the input fields
+			const day = parseInt(document.getElementById('dob-day').value, 10);
+			const month = parseInt(document.getElementById('dob-month').value, 10) - 1; // subtract 1 from month because JavaScript months are 0-based
+			const year = parseInt(document.getElementById('dob-year').value, 10);
+
+			// Calculate the user's age
+			const age = calculateAge(day, month, year);
+
+			// Display the user's age on the page
+			ageParagraph.textContent = `Your age is: ${age}`;
+		});
+	</script>
+</body>
+</html>
